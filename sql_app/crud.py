@@ -30,36 +30,27 @@ def create_user(db: Session, user: schemas.UserCreate):
         return db_users
 
 
-def create_coord(db: Session, coords: schemas.CoordCreate):
-    db_coord = models.Coord(**coords.dict())
-
+def create_coord(db: Session, coord: schemas.CoordCreate):
+    db_coord = models.Coord(**coord.dict())
     db.add(db_coord)
     db.commit()
     db.refresh(db_coord)
-
     return db_coord.id
 
 
-def create_pass(db: Session, item: schemas.PassCreate):
-    """
-    Запрос на создание перевала
-    :param db: сессия подключения
-    :param item: схема
-    :return:
-    """
-
+def create_pass(db: Session, item: schemas.PassCreate) -> object:
     db_pass = models.Pass(
         beautyTitle=item.beautyTitle,
         title=item.title,
         other_titles=item.other_titles,
         connect=item.connect,
         add_time=item.add_time,
+        user=item.user,
+        coords=item.coords,
         winter=item.winter,
         summer=item.summer,
         autumn=item.autumn,
         spring=item.spring,
-        user=item.user,
-        coord=item.coord,
     )
 
     db_pass.status = 'new'
@@ -69,4 +60,4 @@ def create_pass(db: Session, item: schemas.PassCreate):
     db.commit()
     db.refresh(db_pass)
 
-    return db_pass.id
+    return db_pass

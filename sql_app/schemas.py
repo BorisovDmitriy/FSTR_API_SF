@@ -1,6 +1,6 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 from datetime import datetime
-from typing import List, Union, Optional
+from typing import Optional
 
 
 class CoordBase(BaseModel):
@@ -65,22 +65,21 @@ class User(UserBase):
         orm_mode = True
 
 
-# class PassBase(BaseModel):
-#     id: int
-#     beautyTitle: str
-#     title: str
-#     other_titles: str
-#     connect: str
-#     winter: str
-#     summer: str
-#     autumn: str
-#     spring: str
-#     user: Optional[UserCreate]
-#     coord: Optional[CoordCreate]
-#     # images: Optional[List[ImageBase]]
+class PassBase(BaseModel):
+    id: int
+    beautyTitle: str
+    title: str
+    other_titles: str
+    connect: str
+    winter: str
+    summer: str
+    autumn: str
+    spring: str
+    user: Optional[UserCreate]
+    coords: Optional[CoordCreate]
 
 
-class PassCreate(BaseModel):
+class PassCreate(PassBase):
     beautyTitle: str
     title: str
     other_titles: str
@@ -91,8 +90,7 @@ class PassCreate(BaseModel):
     autumn: str
     spring: str
     user: Optional[UserCreate]
-    coord: Optional[CoordCreate]
-    # images: Optional[List[ImageCreate]]
+    coords: Optional[CoordCreate]
 
     class Config:
         schema_extra = {
@@ -117,12 +115,7 @@ class PassCreate(BaseModel):
                     "latitude": "45.3842",
                     "longitude": "7.1525",
                     "height": "1200",
-                },
-                # "images":
-                #     [{"image_url": "",
-                #       "title": "Седловина"},
-                #      {"image_url": "",
-                #       "title": "Подъем"}]
+                }
             }
         }
 

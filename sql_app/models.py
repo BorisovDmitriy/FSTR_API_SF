@@ -1,10 +1,7 @@
 from sql_app.database import Base
-
 from sqlalchemy import Column, ForeignKey, Integer, String, Float
 from datetime import datetime
-from sqlalchemy.orm import relationship, declarative_base
-
-Base = declarative_base()
+from sqlalchemy.orm import relationship
 
 
 class User(Base):
@@ -26,7 +23,6 @@ class Coord(Base):
     latitude = Column(Float)
     longitude = Column(Float)
     height = Column(Integer)
-
     pass_add = relationship("Pass", back_populates="coord")
 
 
@@ -55,6 +51,9 @@ class Pass(Base):
     spring = Column(String)
     user = Column(Integer, ForeignKey("users.id"))
     coords = Column(Integer, ForeignKey("coords.id"))
+
     users = relationship("User", back_populates="pass_add")
     coord = relationship("Coord", back_populates="pass_add")
-    # image = relationship("Image", back_populates="___")
+
+    def __repr__(self):
+        return f'add_time={self.add_time}'
