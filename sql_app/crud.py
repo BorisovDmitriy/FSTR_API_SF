@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
 from sql_app import models, schemas
 import datetime
+from fastapi.encoders import jsonable_encoder
 
 
 def get_user(db: Session, user_id: int):
@@ -59,3 +60,32 @@ def create_pass(db: Session, item: schemas.PassCreate) -> object:
     db.refresh(db_pass)
 
     return db_pass.id
+
+
+def search_pass(db: Session, new_pass: int, image: schemas.ImageCreate):
+    for i in image:
+        db_image = models.Image(**i.dict())
+
+        db_image.id_pass = new_pass
+
+        db.add(db_image)
+
+    db.commit()
+
+
+def get_pass(db: Session, id: int) -> dict:
+    c_pass = db.query(models.Pass).filter(models.Pass.id == id).first()
+    user = db.query(models.User).filter(models.User.id == c_pass.user).first()
+    coords = db.query(models.Coord).filter(models.Coord.id == c_pass.coords).first()
+    image = db.query(models.Image).filter(models.Image.id_pass == id).all()
+
+    json_user = jsonable_encoder(user)
+    json_coords = jsonable_encoder(coords)
+    json_images = jsonable_encoder(image)
+    dict_pass = jsonable_encoder(c_pass)
+
+    dict_pass['user'] = json_user
+    dict_pass['coords'] = json_coords
+    dict_pass['images'] = json_images
+
+    return dict_pass

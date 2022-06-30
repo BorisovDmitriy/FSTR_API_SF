@@ -27,4 +27,10 @@
 -Выполняем требование к автогенерации alembic revision --autogenerate -m "Added account table"
 10. Создаем crud.py и заполняем его
 11. Создаем файл errors, описываем ErrorConnectionServer
+12. Описываем Post запрос в файле main,   Необходимо добиться работы БД и FastApi.
+Сначало без alemblic.
+13. Отправляем в гит, без картинок
+
+ Спринт 2
+1. Реализуем добавление картинок, models, schemas, crud, main снял коментарии с заготовок
 

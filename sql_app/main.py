@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from sql_app import crud, models, schemas
 from sql_app.database import engine, SessionLocal
 from sql_app.errors import ErrorConnectionServer, get_json_response
+from fastapi.encoders import jsonable_encoder
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -35,4 +36,12 @@ def post_pass(item: schemas.PassCreate, db: Session = Depends(get_db)):
 
     new_pass = crud.create_pass(db=db, item=item)
 
+    crud.search_pass(db=db, new_pass=new_pass, image=item.images)
+
     return get_json_response(200, "Отправлено", new_pass)
+
+
+@app.get('/submitData/{id}', response_model=schemas.PassCreate)
+def search_pass(id: int, db: Session = Depends(get_db)):
+    item = crud.get_pass(db=db, id=id)
+    return get_json_response(200, 'Объект получен', jsonable_encoder(item))

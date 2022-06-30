@@ -26,14 +26,19 @@ class Coord(Base):
     pass_add = relationship("Pass", back_populates="coord")
 
 
-# class Image(Base):
-#     ___tablename__ = "coords"
-#     id = Column(Integer, primary_key=True, index=True)
-#     title = Column(String, index=True)
-#     description = Column(String, index=True)
-#     pass_id = Column(Integer, ForeignKey('pass_added.id'))
-#
-#     pass_add = relationship("Pass", back_populates="image")
+class Image(Base):
+    __tablename__ = "images"
+
+    id = Column(Integer, primary_key=True, index=True)
+    image_url = Column(String)
+    title = Column(String)
+    id_pass = Column(Integer, ForeignKey("passes.id"))
+
+    # Организация связи таблиц
+    owner = relationship("Pass", back_populates="images")
+
+    def __repr__(self):
+        return f"id={self.id} image_url={self.image_url} title={self.title} id_pass={self.id_pass}"
 
 
 class Pass(Base):
@@ -54,6 +59,7 @@ class Pass(Base):
 
     users = relationship("User", back_populates="pass_add")
     coord = relationship("Coord", back_populates="pass_add")
+    images = relationship("Image", back_populates="owner")
 
     def __repr__(self):
         return f'add_time={self.add_time}'
