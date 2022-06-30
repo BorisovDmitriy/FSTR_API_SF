@@ -16,7 +16,7 @@ class CoordCreate(CoordBase):
 
     class Config:
         schema_extra = {
-            'example': {
+            "example": {
                 "latitude": "45.3842",
                 "longitude": "7.1525",
                 "height": "1200",
@@ -24,7 +24,7 @@ class CoordCreate(CoordBase):
         }
 
 
-class Coord(CoordCreate):
+class Coord(CoordBase):
     id: int
     pass_id: int
     pass_add: 'Pass'
@@ -46,7 +46,7 @@ class UserCreate(UserBase):
 
     class Config:
         schema_extra = {
-            'example': {
+            "example": {
                 "email": "qwerty@mail.ru",
                 "fam": "Пупкин",
                 "name": "Василий",
@@ -75,11 +75,11 @@ class PassBase(BaseModel):
     summer: str
     autumn: str
     spring: str
-    user: Optional[UserCreate]
-    coords: Optional[CoordCreate]
+    user: Optional[UserCreate] = None
+    coords: Optional[CoordCreate] = None
 
 
-class PassCreate(PassBase):
+class PassCreate(BaseModel):
     beautyTitle: str
     title: str
     other_titles: str
@@ -89,27 +89,27 @@ class PassCreate(PassBase):
     summer: str
     autumn: str
     spring: str
-    user: Optional[UserCreate]
-    coords: Optional[CoordCreate]
+    user: Optional[UserCreate] = None
+    coords: Optional[CoordCreate] = None
 
     class Config:
         schema_extra = {
-            'example': {
+            "example": {
                 "beautyTitle": "пер. ",
                 "title": "Пхия",
                 "other_titles": "Триев",
                 "connect": "",
                 "add_time": "2021-09-22 13:18:13",
-                "winter": "",
+                "winter": "1B",
                 "summer": "1А",
                 "autumn": "1А",
-                "spring": "",
+                "spring": "1B",
                 "user": {
                     "email": "qwer@mail.ru",
                     "phone": "79270123456",
                     "fam": "Пупкин",
                     "name": "Василий",
-                    "otc": "Иванович"
+                    "otc": "Иванович",
                 },
                 "coords": {
                     "latitude": "45.3842",
