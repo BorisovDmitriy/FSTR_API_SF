@@ -165,26 +165,26 @@ class PassAddedUpdate(BaseModel):
             'example': {
                 'id': 1,
                 'beauty_title': 'пер.',
-                'title': 'Гроза',
-                'other_titles': 'Третьев',
+                'title': 'Дождь',
+                'other_titles': 'Иванов',
                 'connect': ', ',
                 'winter': '1Б',
                 'summer': '1А',
                 'autumn': '1А',
                 'spring': '1А',
                 'coords': {
-                    'latitude': 56.2368,
-                    'longitude': 41.683,
-                    'height': 120,
+                    'latitude': 32.254,
+                    'longitude': 98.541,
+                    'height': 1110,
                 },
                 "images":
                     [{"id": 1,
-                      "image_url": "media/1",
-                      "title": "Спуск",
+                      "image_url": "image/23",
+                      "title": "Оползень",
                       "id_pass": 1},
                      {"id": 2,
-                      "image_url": "media/1",
-                      "title": "Равнина",
+                      "image_url": "image/10",
+                      "title": "Гора",
                       "id_pass": 1}]
             }
         }

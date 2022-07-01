@@ -56,6 +56,7 @@ class Pass(Base):
     spring = Column(String)
     user = Column(Integer, ForeignKey("users.id"))
     coords = Column(Integer, ForeignKey("coords.id"))
+    status = Column(String)
 
     users = relationship("User", back_populates="pass_add")
     coord = relationship("Coord", back_populates="pass_add")

@@ -65,9 +65,7 @@ def create_pass(db: Session, item: schemas.PassCreate) -> object:
 def search_pass(db: Session, new_pass: int, image: schemas.ImageCreate):
     for i in image:
         db_image = models.Image(**i.dict())
-
         db_image.id_pass = new_pass
-
         db.add(db_image)
 
     db.commit()
@@ -89,3 +87,67 @@ def get_pass(db: Session, id: int) -> dict:
     dict_pass['images'] = json_images
 
     return dict_pass
+
+
+def search_all(db: Session, email: str):
+
+    user_pass = get_user_by_email(db, email)
+    q_pass = db.query(models.Pass).filter(models.Pass.user == user_pass.id).all()
+
+    list_pass = jsonable_encoder(q_pass)
+    json_user = jsonable_encoder(user_pass)
+
+    index = -1
+    for i in q_pass:
+        index += 1
+
+        json_coords = jsonable_encoder(db.query(models.Coord).filter(models.Coord.id == i.coords).first())
+        json_images = jsonable_encoder(db.query(models.Image).filter(models.Image.id_pass == i.id).all())
+
+        list_pass[index]['user'] = json_user
+        list_pass[index]['coords'] = json_coords
+        list_pass[index]['images'] = json_images
+
+    return list_pass
+
+
+def update_pass(pass_id: int, db: Session, item: schemas.PassAddedUpdate) -> object:
+    db_pass = db.query(models.Pass).filter(models.Pass.id == pass_id).first()
+
+    db_pass.beauty_title = item.beauty_title
+    db_pass.title = item.title
+    db_pass.other_titles = item.other_titles
+    db_pass.connect = item.connect
+    db_pass.winter = item.winter
+    db_pass.summer = item.summer
+    db_pass.autumn = item.autumn
+    db_pass.spring = item.spring
+
+    if not db_pass.coords is None:
+        db_coords = db.query(models.Coord).filter(models.Coord.id == db_pass.coords).first()
+
+        db_coords.latitude = item.coords.latitude
+        db_coords.longitude = item.coords.longitude
+        db_coords.height = item.coords.height
+
+        db.add(db_coords)
+        db.commit()
+        db.refresh(db_coords)
+    else:
+        db_coords = create_coord(db, item.coords)
+        db_pass.coords_id = db_coords
+
+    for img in item.images:
+        id_img = img.id
+        db_image = models.Image(**img.dict())
+        db_amg = db.query(models.Image).filter(models.Image.id == id_img).first()
+        db.delete(db_amg)
+        db.add(db_image)
+
+        db.commit()
+
+    db.add(db_pass)
+    db.commit()
+    db.refresh(db_pass)
+
+    return db_pass.id
