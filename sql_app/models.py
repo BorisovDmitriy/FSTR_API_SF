@@ -1,10 +1,13 @@
 from sql_app.database import Base
-from sqlalchemy import Column, ForeignKey, Integer, String, Float
-from datetime import datetime
+from sqlalchemy import Column, ForeignKey, Integer, String, Float, DateTime
+# from datetime import datetime
 from sqlalchemy.orm import relationship
 
 
 class User(Base):
+    """
+     Клас модели пользователя.
+    """
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -13,10 +16,17 @@ class User(Base):
     name = Column(String)
     otc = Column(String)
     phone = Column(String, index=True, unique=True)
+
     pass_add = relationship("Pass", back_populates="users")
 
 
 class Coord(Base):
+    """
+     Клас модели географических координат:
+     Широта
+     Долгота
+     Высота
+    """
     __tablename__ = "coords"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -27,6 +37,9 @@ class Coord(Base):
 
 
 class Image(Base):
+    """
+    Клас модели картинок/фото перевала.
+    """
     __tablename__ = "images"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -42,6 +55,9 @@ class Image(Base):
 
 
 class Pass(Base):
+    """
+     Клас модели перевалов.
+    """
     __tablename__ = "passes"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -49,7 +65,7 @@ class Pass(Base):
     title = Column(String)
     other_titles = Column(String)
     connect = Column(String)
-    add_time = datetime
+    add_time = Column(DateTime)
     winter = Column(String)
     summer = Column(String)
     autumn = Column(String)
@@ -61,6 +77,3 @@ class Pass(Base):
     users = relationship("User", back_populates="pass_add")
     coord = relationship("Coord", back_populates="pass_add")
     images = relationship("Image", back_populates="owner")
-
-    def __repr__(self):
-        return f'add_time={self.add_time}'

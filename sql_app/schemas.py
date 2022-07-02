@@ -4,6 +4,9 @@ from typing import Optional, List, Union
 
 
 class CoordBase(BaseModel):
+    """
+    Класс схемы для создания записи координат.
+    """
     latitude: float
     longitude: float
     height: int
@@ -38,6 +41,9 @@ class UserBase(BaseModel):
 
 
 class UserCreate(UserBase):
+    """
+    Класс схемы для создания записи пользователя.
+    """
     email: str
     fam: str
     name: str
@@ -66,6 +72,9 @@ class User(UserBase):
 
 
 class ImageBase(BaseModel):
+    """
+    Класс схемы для создания записи картинок/фото.
+    """
     id: int
     image_url: str
     title: str
@@ -86,6 +95,9 @@ class Image(ImageCreate):
 
 
 class PassBase(BaseModel):
+    """
+    Класс схемы для создания записи перевалов.
+    """
     id: int
     beautyTitle: str
     title: str
@@ -148,6 +160,9 @@ class PassCreate(BaseModel):
 
 
 class PassAddedUpdate(BaseModel):
+    """
+    Класс схемы для внесения изменений в записи перевалов.
+    """
     id: Union[int, None] = None
     beauty_title: Union[str, None] = None
     title: Union[str, None] = None
